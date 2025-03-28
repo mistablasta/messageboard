@@ -2,7 +2,7 @@
 
 ### Sovelluksen toiminnot
 
-* Käyttäjä pystyy luomaan oman tunnuksen ja kirjautua sisään.
+* Käyttäjä pystyy luomaan oman tunnuksen ja kirjautua sisään. ✅
 * Käyttäjä pystyy julkaista omia viestejä, sekä kommentoida muiden viesteihin.
 * Käyttäjä voi muokata ja poistaa omia viestejä, jolloin viestiin tulee (muokattu) huomautus.
 * Käyttäjä voi lisätä kuvia omiin viesteihin.
