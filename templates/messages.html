@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <style>
+        body {
+            background-color: black;
+            color: red;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .message {
+            border: 1px solid red;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        .message p {
+            margin: 0;
+        }
+        .message .timestamp {
+            font-size: 0.9em;
+            color: grey;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+        }
+        input[type="submit"] {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: darkred;
+        }
+        .actions {
+            margin-top: 10px;
+        }
+        .actions a, .actions form {
+            display: inline-block;
+        }
+        .actions a {
+            color: red;
+            text-decoration: none;
+            font-size: 12px;
+            padding: 5px 10px;
+            border: 1px solid red;
+            border-radius: 3px;
+        }
+        .actions a:hover {
+            background-color: darkred;
+        }
+        .actions form input[type="submit"] {
+            font-size: 12px;
+            padding: 5px 10px;
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .actions form input[type="submit"]:hover {
+            background-color: darkred;
+        }
+  
+        .search-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .search-container input[type="text"] {
+            width: 150px;
+            padding: 5px;
+            font-size: 14px;
+        }
+        .search-container input[type="submit"] {
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <form action="/search" method="GET">
+            <input type="text" name="query" placeholder="Search..." required>
+            <input type="submit" value="🔍">
+        </form>
+    </div>
+
+    <div class="container">
+        <h1>Messages</h1>
+
+        {% if session.username %}
+        <form action="/messages" method="POST">
+            <textarea name="content" placeholder="Write a message..." required></textarea>
+            <input type="submit" value="Post Message">
+        </form>
+        {% else %}
+        <p>You must be logged in to post a message. <a href="/login">Login</a></p>
+        {% endif %}
+
+        <h2>Recent Messages:</h2>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="message">
+            <p><strong>{{ message.username }}:</strong> {{ message.content }}</p>
+            <p class="timestamp">{{ message.timestamp }}</p>
+            {% if session.username == message.username %}
+            <div class="actions">
+                <a href="/edit/{{ message.id }}">Edit</a>
+                <form action="/delete/{{ message.id }}" method="POST" style="display:inline;">
+                    <input type="submit" value="Delete">
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No messages yet.</p>
+        {% endif %}
+
+        <a href="/">Back to messageboard</a>
+    </div>
+</body>
+</html>
