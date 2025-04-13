@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ username }}'s Profile</title>
+    <style>
+        body {
+            background-color: black;
+            color: red;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .profile-stats p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+        .message {
+            border: 1px solid red;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        .message .timestamp {
+            font-size: 0.9em;
+            color: grey;
+        }
+        .reactions {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        .reaction-button {
+            background: none;
+            border: none;
+            cursor: default;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .reaction-count {
+            font-size: 14px;
+            color: white;
+            margin-right: 10px;
+        }
+        .categories {
+            font-size: 0.95em;
+            color: red;
+        }
+        a {
+            color: red;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ username }}'s Profile</h1>
+
+        <div class="profile-stats">
+            <p><strong>Total Score:</strong> {{ total_score }}</p>
+            <p><strong>Messages Posted:</strong> {{ message_count }}</p>
+            <p><strong>Favorite Category:</strong> {{ favorite_category }}</p>
+        </div>
+
+        <h2>Messages</h2>
+
+        {% for msg in messages %}
+        <div class="message">
+            <p><strong>{{ msg.username }}:</strong> {{ msg.content }}</p>
+            <p class="timestamp">{{ msg.timestamp }}</p>
+            <p class="categories"><strong>Categories:</strong> {{ msg.categories or 'None' }}</p>
+
+            <div class="reactions">
+                <span class="reaction-button">👍</span>
+                <span class="reaction-count">{{ msg.thumbs_up_count }}</span>
+                <span class="reaction-button">👎</span>
+                <span class="reaction-count">{{ msg.thumbs_down_count }}</span>
+            </div>
+        </div>
+        {% endfor %}
+
+        <a href="/">Back to messageboard</a>
+    </div>
+</body>
+</html>

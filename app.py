@@ -3,8 +3,7 @@ from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import db
-import user
-import message
+from sql import message, profiles, user
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -63,11 +62,13 @@ def messages():
             return redirect("/login")
 
         content = request.form["content"]
-        message.insert_message(session["user_id"], content)
+        selected_categories = [int(c) for c in request.form.getlist("categories")]
+        message.insert_message(session["user_id"], content, selected_categories)
         return redirect("/messages")
 
     messages_list = message.get_all_messages()
-    return render_template("messages.html", messages=messages_list)
+    categories = db.query("SELECT id, name FROM categories")
+    return render_template("messages.html", messages=messages_list, categories=categories)
 
 @app.route("/search", methods=["GET"])
 def search():
@@ -114,3 +115,21 @@ def add_reaction_route(message_id, reaction_type):
 
     message.add_reaction(message_id, user_id, reaction_type)
     return redirect("/messages")
+
+@app.route("/profile/<username>")
+def profile(username):
+    user_id = user.get_user_id(username)
+    if not user_id:
+        return "User not found", 404
+
+    total_score = profiles.get_total_score(user_id)
+    message_count = profiles.get_message_count(user_id)
+    favorite_category = profiles.get_favorite_category(user_id)
+    user_messages = message.get_messages_by_user(user_id)
+
+    return render_template("profile.html",
+                           username=username,
+                           total_score=total_score,
+                           message_count=message_count,
+                           favorite_category=favorite_category,
+                           messages=user_messages)

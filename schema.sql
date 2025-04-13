@@ -21,3 +21,26 @@ CREATE TABLE reactions (
     FOREIGN KEY (user_id) REFERENCES users(id),
     UNIQUE (message_id, user_id)
 );
+
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE message_category (
+    message_id INTEGER,
+    category_id INTEGER,
+    FOREIGN KEY (message_id) REFERENCES messages(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    PRIMARY KEY (message_id, category_id)
+);
+
+
+INSERT INTO categories (name) VALUES ('Random');
+INSERT INTO categories (name) VALUES ('Serious');
+INSERT INTO categories (name) VALUES ('School');
+INSERT INTO categories (name) VALUES ('Fashion');
+INSERT INTO categories (name) VALUES ('TV');
+INSERT INTO categories (name) VALUES ('Video Games');
+INSERT INTO categories (name) VALUES ('Books');
+INSERT INTO categories (name) VALUES ('News');

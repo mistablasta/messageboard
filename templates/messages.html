@@ -129,6 +129,14 @@
         {% if session.username %}
         <form action="/messages" method="POST">
             <textarea name="content" placeholder="Write a message..." required></textarea>
+
+            <h3>Select Categories:</h3>
+            {% for category in categories %}
+            <label>
+                <input type="checkbox" name="categories" value="{{ category.id }}"> {{ category.name }}
+            </label><br>
+            {% endfor %}
+
             <input type="submit" value="Post Message">
         </form>
         {% else %}
@@ -140,9 +148,11 @@
         {% if messages %}
         {% for message in messages %}
         <div class="message">
-            <p><strong>{{ message.username }}:</strong> {{ message.content }}</p>
+            <p><strong><a href="{{ url_for('profile', username=message.username) }}">{{ message.username }}</a>:</strong></p>
+            <p>{{ message.content }}</p>
             <p class="timestamp">{{ message.timestamp }}</p>
 
+            <p><strong>Categories:</strong> {{ message.categories }}</p>
 
             <div class="reactions">
                 <div class="reaction-buttons">

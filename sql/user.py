@@ -1,4 +1,3 @@
-import sqlite3
 import db
 
 def create_user(username, password_hash):
