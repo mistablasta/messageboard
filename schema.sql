@@ -6,8 +6,8 @@ CREATE TABLE users (
 
 CREATE TABLE messages (
     id INTEGER PRIMARY KEY,
-    username TEXT,
+    user_id INTEGER,
     content TEXT,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (username) REFERENCES users(username)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
