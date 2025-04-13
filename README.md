@@ -10,6 +10,7 @@
 * Käyttäjä voi selata muiden profiileja, joissa näkyy käyttäjän tilastoja ja kaikki käyttäjän viestit. ✅
 
 ### TODO:
+* Optimisointi suurelle tietomäärälle. ❌
 * Käyttäjä voi lisätä kuvia omiin viesteihin.❌
 * Käyttäjä voi lisätä profiilikuvan. ❌
 * Vahvistusviesti ennen viestin poistoa. ❌
