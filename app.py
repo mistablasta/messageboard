@@ -1,6 +1,5 @@
 import sqlite3
-from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import db
@@ -42,49 +41,53 @@ def login_page():
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    
+
     password_hash = user.get_user_password_hash(username)
     if password_hash and check_password_hash(password_hash, password):
+        user_id = db.query("SELECT id FROM users WHERE username = ?", [username])[0][0]
         session["username"] = username
+        session["user_id"] = user_id
         return redirect("/")
     else:
         return "Wrong username or password."
 
 @app.route("/logout")
 def logout():
-    del session["username"]
+    session.clear()
     return redirect("/")
 
 @app.route("/messages", methods=["GET", "POST"])
 def messages():
     if request.method == "POST":
-        if "username" not in session:
+        if "user_id" not in session:
             return redirect("/login")
 
         content = request.form["content"]
-        message.insert_message(session["username"], content)
+        message.insert_message(session["user_id"], content)
         return redirect("/messages")
 
-    messages = message.get_all_messages()
-    return render_template("messages.html", messages=messages)
+    messages_list = message.get_all_messages()
+    return render_template("messages.html", messages=messages_list)
 
 @app.route("/search", methods=["GET"])
 def search():
     query = request.args.get("query")
-    messages = message.search_messages(query)
-    return render_template("messages.html", messages=messages)
+    messages_list = message.search_messages(query)
+    return render_template("messages.html", messages=messages_list)
 
 @app.route("/edit/<int:message_id>", methods=["GET", "POST"])
 def edit(message_id):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/login")
+
+    user_id = session["user_id"]
 
     if request.method == "POST":
         content = request.form["content"]
-        message.update_message(message_id, session["username"], content)
+        message.update_message(message_id, user_id, content)
         return redirect("/messages")
 
-    msg = message.get_message_by_id_and_user(message_id, session["username"])
+    msg = message.get_message_by_id_and_user(message_id, user_id)
     if not msg:
         return "Message not found or you don't have permission to edit this message."
 
@@ -92,8 +95,22 @@ def edit(message_id):
 
 @app.route("/delete/<int:message_id>", methods=["POST"])
 def delete(message_id):
-    if "username" not in session:
+    if "user_id" not in session:
         return redirect("/login")
 
-    message.delete_message(message_id, session["username"])
+    user_id = session["user_id"]
+    message.delete_message(message_id, user_id)
+    return redirect("/messages")
+
+@app.route("/reaction/<int:message_id>/<reaction_type>", methods=["POST"])
+def add_reaction_route(message_id, reaction_type):
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    if reaction_type not in ['thumbs_up', 'thumbs_down']:
+        return "Invalid reaction type.", 400
+
+    message.add_reaction(message_id, user_id, reaction_type)
     return redirect("/messages")

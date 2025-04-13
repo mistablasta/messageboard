@@ -93,6 +93,26 @@
             font-size: 14px;
             cursor: pointer;
         }
+        
+        .reaction-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .reaction-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .reaction-count {
+            font-size: 14px;
+            color: white;
+            margin-left: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -122,6 +142,24 @@
         <div class="message">
             <p><strong>{{ message.username }}:</strong> {{ message.content }}</p>
             <p class="timestamp">{{ message.timestamp }}</p>
+
+
+            <div class="reactions">
+                <div class="reaction-buttons">
+
+                    <form action="/reaction/{{ message.id }}/thumbs_up" method="POST" style="display:inline;">
+                        <button type="submit" class="reaction-button" title="Thumbs Up">👍</button>
+                    </form>
+                    <span class="reaction-count">{{ message.thumbs_up_count }}</span>
+
+
+                    <form action="/reaction/{{ message.id }}/thumbs_down" method="POST" style="display:inline;">
+                        <button type="submit" class="reaction-button" title="Thumbs Down">👎</button>
+                    </form>
+                    <span class="reaction-count">{{ message.thumbs_down_count }}</span>
+                </div>
+            </div>
+
             {% if session.username == message.username %}
             <div class="actions">
                 <a href="/edit/{{ message.id }}">Edit</a>
