@@ -106,6 +106,8 @@ def edit(message_id):
 
     if request.method == "POST":
         content = request.form["content"]
+        if len(content) > 500:
+            return("Message is too long.")
         message.update_message(message_id, user_id, content)
         return redirect("/messages")
 
