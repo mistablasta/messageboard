@@ -11,6 +11,8 @@ app.secret_key = config.secret_key
 
 @app.route("/register")
 def register():
+    if "csrf_token" not in session:
+        session["csrf_token"] = secrets.token_hex(16)
     return render_template("register.html")
 
 @app.route("/create", methods=["POST"])
@@ -40,6 +42,7 @@ def login_page():
 
 @app.route("/login", methods=["POST"])
 def login():
+    check_csrf()
     username = request.form["username"]
     password = request.form["password"]
 
@@ -55,6 +58,7 @@ def login():
 
 @app.route("/logout", methods=["POST"])
 def logout():
+    check_csrf()
     session.clear()
     return redirect("/")
 
@@ -63,9 +67,7 @@ def messages():
     if request.method == "POST":
         if "user_id" not in session:
             return redirect("/login")
-        
-        if request.method == "POST":
-            check_csrf()
+        check_csrf()
 
         content = request.form["content"]
         selected_categories = [int(c) for c in request.form.getlist("categories")]
