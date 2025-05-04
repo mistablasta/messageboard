@@ -33,7 +33,7 @@ def get_messages_by_user(user_id):
     """
     return db.query(sql, [user_id])
 
-def get_all_messages():
+def get_all_messages(limit=50, offset=0):
     sql = """
     SELECT 
         messages.id, 
@@ -53,8 +53,9 @@ def get_all_messages():
     FROM messages
     JOIN users ON messages.user_id = users.id
     ORDER BY messages.timestamp DESC
+    LIMIT ? OFFSET ?
     """
-    return db.query(sql)
+    return db.query(sql, [limit, offset])
 
 def search_messages(query):
     sql = """

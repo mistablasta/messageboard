@@ -72,9 +72,16 @@ def messages():
         message.insert_message(session["user_id"], content, selected_categories)
         return redirect("/messages")
 
-    messages_list = message.get_all_messages()
+    page = request.args.get("page", default=1, type=int)
+    per_page = 50
+    offset = (page - 1) * per_page
+
+    messages_list = message.get_all_messages(limit=per_page+1, offset=offset)
+    has_more = len(messages_list) > per_page
+    if has_more:
+        messages_list = messages_list[:per_page]
     categories = message.get_all_categories()
-    return render_template("messages.html", messages=messages_list, categories=categories)
+    return render_template("messages.html", messages=messages_list, categories=categories, page=page, has_more=has_more)
 
 @app.route("/search", methods=["GET"])
 def search():

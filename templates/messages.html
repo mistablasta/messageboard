@@ -74,6 +74,14 @@
             {% endif %}
         </div>
         {% endfor %}
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('messages', page=page-1) }}">⬅️ Previous</a>
+            {% endif %}
+            {% if has_more %}
+                <a href="{{ url_for('messages', page=page+1) }}">Next ➡️</a>
+            {% endif %}
+        </div>
         {% else %}
         <p>No messages yet.</p>
         {% endif %}

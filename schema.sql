@@ -16,7 +16,7 @@ CREATE TABLE reactions (
     id INTEGER PRIMARY KEY,
     message_id INTEGER,
     user_id INTEGER,
-    reaction_type TEXT CHECK(reaction_type IN ("thumbs_up", "thumbs_down")),
+    reaction_type TEXT CHECK(reaction_type IN ('thumbs_up', 'thumbs_down')),
     FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE (message_id, user_id)
@@ -36,11 +36,17 @@ CREATE TABLE message_category (
 );
 
 
-INSERT INTO categories (name) VALUES ("Random");
-INSERT INTO categories (name) VALUES ("Serious");
-INSERT INTO categories (name) VALUES ("School");
-INSERT INTO categories (name) VALUES ("Fashion");
-INSERT INTO categories (name) VALUES ("TV");
-INSERT INTO categories (name) VALUES ("Video Games");
-INSERT INTO categories (name) VALUES ("Books");
-INSERT INTO categories (name) VALUES ("News");
+INSERT INTO categories (name) VALUES ('Random');
+INSERT INTO categories (name) VALUES ('Serious');
+INSERT INTO categories (name) VALUES ('School');
+INSERT INTO categories (name) VALUES ('Fashion');
+INSERT INTO categories (name) VALUES ('TV');
+INSERT INTO categories (name) VALUES ('Video Games');
+INSERT INTO categories (name) VALUES ('Books');
+INSERT INTO categories (name) VALUES ('News');
+
+CREATE INDEX idx_messages_user_id ON messages(user_id);
+CREATE INDEX idx_reactions_message_id ON reactions(message_id);
+CREATE INDEX idx_reactions_user_id ON reactions(user_id);
+CREATE INDEX idx_msgcat_category_id ON message_category(category_id);
+CREATE INDEX idx_msgcat_message_id ON message_category(message_id);
