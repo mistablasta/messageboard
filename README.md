@@ -11,8 +11,6 @@
 
 ### TODO:
 * Optimisointi suurelle tietomäärälle. ❌
-* Käyttäjä voi lisätä kuvia omiin viesteihin.❌
-* Käyttäjä voi lisätä profiilikuvan. ❌
 * Vahvistusviesti ennen viestin poistoa. ❌
 * Käyttäjäkokemuksen parantaminen (näppäiden asettelu, ulkoasu yms.) ❌ 
 * Kyberturvallisuus. ❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌
