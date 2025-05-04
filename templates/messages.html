@@ -28,6 +28,7 @@
             </label><br>
             {% endfor %}
 
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <input type="submit" value="Post Message">
         </form>
         {% else %}
@@ -49,12 +50,14 @@
                 <div class="reaction-buttons">
 
                     <form action="/reaction/{{ message.id }}/thumbs_up" method="POST" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <button type="submit" class="reaction-button" title="Thumbs Up">👍</button>
                     </form>
                     <span class="reaction-count">{{ message.thumbs_up_count }}</span>
 
 
                     <form action="/reaction/{{ message.id }}/thumbs_down" method="POST" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <button type="submit" class="reaction-button" title="Thumbs Down">👎</button>
                     </form>
                     <span class="reaction-count">{{ message.thumbs_down_count }}</span>

@@ -1,9 +1,10 @@
 import sqlite3
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, abort, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import db
 from sql import message, profiles, user
+import secrets
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -14,6 +15,7 @@ def register():
 
 @app.route("/create", methods=["POST"])
 def create():
+    check_csrf()
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
@@ -46,6 +48,7 @@ def login():
         user_id = user.get_user_id_by_username(username)
         session["username"] = username
         session["user_id"] = user_id
+        session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
     else:
         return "Wrong username or password."
@@ -60,6 +63,9 @@ def messages():
     if request.method == "POST":
         if "user_id" not in session:
             return redirect("/login")
+        
+        if request.method == "POST":
+            check_csrf()
 
         content = request.form["content"]
         selected_categories = [int(c) for c in request.form.getlist("categories")]
@@ -81,6 +87,9 @@ def edit(message_id):
     if "user_id" not in session:
         return redirect("/login")
 
+    if request.method == "POST":
+        check_csrf()
+
     user_id = session["user_id"]
 
     if request.method == "POST":
@@ -99,6 +108,9 @@ def delete(message_id):
     if "user_id" not in session:
         return redirect("/login")
 
+    if request.method == "POST":
+        check_csrf()
+
     user_id = session["user_id"]
 
     if request.method == "POST":
@@ -111,6 +123,8 @@ def delete(message_id):
 def add_reaction_route(message_id, reaction_type):
     if "user_id" not in session:
         return redirect("/login")
+
+    check_csrf()
 
     user_id = session["user_id"]
 
@@ -137,3 +151,7 @@ def profile(username):
                            message_count=message_count,
                            favorite_category=favorite_category,
                            messages=user_messages)
+
+def check_csrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
