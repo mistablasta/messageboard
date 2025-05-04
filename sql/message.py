@@ -95,12 +95,14 @@ def update_message(message_id, user_id, content):
     db.execute(sql, [content, message_id, user_id])
 
 def delete_message(message_id, user_id):
-    sql = "DELETE FROM message_category WHERE message_id = ?"
-    db.execute(sql, [message_id])
-    sql = "DELETE FROM reactions WHERE message_id = ?"
-    db.execute(sql, [message_id])
-    sql = "DELETE FROM messages WHERE id = ? AND user_id = ?"
-    db.execute(sql, [message_id, user_id])
+    result = db.execute(
+        "DELETE FROM messages WHERE id = ? AND user_id = ?",
+        (message_id, user_id)
+    )
+
+def get_all_categories():
+    sql = "SELECT id, name FROM categories"
+    return db.query(sql)
 
 #Reactions
 def add_reaction(message_id, user_id, reaction_type):

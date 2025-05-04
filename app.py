@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import db
@@ -26,7 +26,7 @@ def create():
     except sqlite3.IntegrityError:
         return "Username already taken."
 
-    return "Account created."
+    return redirect(url_for("index", message="Account created successfully!"))
 
 @app.route("/")
 def index():
@@ -43,14 +43,14 @@ def login():
 
     password_hash = user.get_user_password_hash(username)
     if password_hash and check_password_hash(password_hash, password):
-        user_id = db.query("SELECT id FROM users WHERE username = ?", [username])[0][0]
+        user_id = user.get_user_id_by_username(username)
         session["username"] = username
         session["user_id"] = user_id
         return redirect("/")
     else:
         return "Wrong username or password."
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
     session.clear()
     return redirect("/")
@@ -67,7 +67,7 @@ def messages():
         return redirect("/messages")
 
     messages_list = message.get_all_messages()
-    categories = db.query("SELECT id, name FROM categories")
+    categories = message.get_all_categories()
     return render_template("messages.html", messages=messages_list, categories=categories)
 
 @app.route("/search", methods=["GET"])
@@ -94,14 +94,18 @@ def edit(message_id):
 
     return render_template("edit.html", message=msg[0])
 
-@app.route("/delete/<int:message_id>", methods=["POST"])
+@app.route("/delete/<int:message_id>", methods=["GET", "POST"])
 def delete(message_id):
     if "user_id" not in session:
         return redirect("/login")
 
     user_id = session["user_id"]
-    message.delete_message(message_id, user_id)
-    return redirect("/messages")
+
+    if request.method == "POST":
+        message.delete_message(message_id, user_id)
+        return redirect("/messages")
+    
+    return render_template("delete.html", message_id=message_id)
 
 @app.route("/reaction/<int:message_id>/<reaction_type>", methods=["POST"])
 def add_reaction_route(message_id, reaction_type):

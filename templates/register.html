@@ -3,75 +3,7 @@
 
 <head>
   <title>Registration</title>
-  <style>
-    body {
-      background-color: black;
-      color: red;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    h1 {
-      font-size: 3em;
-      margin: 0;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      padding: 20px;
-    }
-
-    .container a {
-      color: red;
-      text-decoration: none;
-      font-size: 1.2em;
-    }
-
-    .container a:hover {
-      text-decoration: underline;
-    }
-
-    .form-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .form-container form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .form-container input[type="text"],
-    .form-container input[type="password"] {
-      margin: 10px 0;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-    }
-
-    .form-container input[type="submit"] {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: red;
-      color: black;
-      cursor: pointer;
-    }
-
-    .form-container input[type="submit"]:hover {
-      background-color: darkred;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>

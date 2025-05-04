@@ -12,3 +12,8 @@ def get_user_password_hash(username):
 def get_user_id(username):
     result = db.query("SELECT id FROM users WHERE username = ?", [username])
     return result[0][0] if result else None
+
+def get_user_id_by_username(username):
+    sql = "SELECT id FROM users WHERE username = ?"
+    result = db.query(sql, [username])
+    return result[0][0] if result else None

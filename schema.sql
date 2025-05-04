@@ -9,16 +9,16 @@ CREATE TABLE messages (
     user_id INTEGER,
     content TEXT,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE reactions (
     id INTEGER PRIMARY KEY,
     message_id INTEGER,
     user_id INTEGER,
-    reaction_type TEXT CHECK(reaction_type IN ('thumbs_up', 'thumbs_down')),
-    FOREIGN KEY (message_id) REFERENCES messages(id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
+    reaction_type TEXT CHECK(reaction_type IN ("thumbs_up", "thumbs_down")),
+    FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE (message_id, user_id)
 );
 
@@ -30,17 +30,17 @@ CREATE TABLE categories (
 CREATE TABLE message_category (
     message_id INTEGER,
     category_id INTEGER,
-    FOREIGN KEY (message_id) REFERENCES messages(id),
-    FOREIGN KEY (category_id) REFERENCES categories(id),
+    FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
     PRIMARY KEY (message_id, category_id)
 );
 
 
-INSERT INTO categories (name) VALUES ('Random');
-INSERT INTO categories (name) VALUES ('Serious');
-INSERT INTO categories (name) VALUES ('School');
-INSERT INTO categories (name) VALUES ('Fashion');
-INSERT INTO categories (name) VALUES ('TV');
-INSERT INTO categories (name) VALUES ('Video Games');
-INSERT INTO categories (name) VALUES ('Books');
-INSERT INTO categories (name) VALUES ('News');
+INSERT INTO categories (name) VALUES ("Random");
+INSERT INTO categories (name) VALUES ("Serious");
+INSERT INTO categories (name) VALUES ("School");
+INSERT INTO categories (name) VALUES ("Fashion");
+INSERT INTO categories (name) VALUES ("TV");
+INSERT INTO categories (name) VALUES ("Video Games");
+INSERT INTO categories (name) VALUES ("Books");
+INSERT INTO categories (name) VALUES ("News");

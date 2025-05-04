@@ -7,11 +7,13 @@
 * Käyttäjä voi selata muiden viestejä, sekä hakea niitä ✅
 * Käyttäjä voi muokata ja poistaa omia viestejä ✅
 * Käyttäjä voi reagoida muiden viesteihin. ✅
-* Käyttäjä voi selata muiden profiileja, joissa näkyy käyttäjän tilastoja ja kaikki käyttäjän viestit ✅
+* Käyttäjä voi selata muiden profiileja, joissa näkyy käyttäjän tilastoja ja kaikki käyttäjän viestit. ✅
 
-
-* Käyttäjä voi lisätä kuvia omiin viesteihin.❌
-* Käyttäjä voi lisätä profiilikuvan. ❌
+### TODO:
+* Optimisointi suurelle tietomäärälle. ❌
+* Vahvistusviesti ennen viestin poistoa. ❌
+* Käyttäjäkokemuksen parantaminen (näppäiden asettelu, ulkoasu yms.) ❌ 
+* Kyberturvallisuus. ❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌
 
 ### Asentaminen
 Varmista, että sinulla on `flask`-kirjasto, jonka jälkeen luot tietokantaan taulut komennolla

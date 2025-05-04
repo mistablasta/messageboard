@@ -4,59 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ username }}'s Profile</title>
-    <style>
-        body {
-            background-color: black;
-            color: red;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .profile-stats p {
-            margin: 5px 0;
-            font-size: 1.1em;
-        }
-        .message {
-            border: 1px solid red;
-            margin-bottom: 10px;
-            padding: 10px;
-        }
-        .message .timestamp {
-            font-size: 0.9em;
-            color: grey;
-        }
-        .reactions {
-            display: flex;
-            align-items: center;
-            margin-top: 5px;
-        }
-        .reaction-button {
-            background: none;
-            border: none;
-            cursor: default;
-            font-size: 18px;
-            margin-right: 10px;
-        }
-        .reaction-count {
-            font-size: 14px;
-            color: white;
-            margin-right: 10px;
-        }
-        .categories {
-            font-size: 0.95em;
-            color: red;
-        }
-        a {
-            color: red;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">

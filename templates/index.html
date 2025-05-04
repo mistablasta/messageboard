@@ -1,63 +1,33 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Main page</title>
-  <style>
-    body {
-      background-color: black;
-      color: red;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    h1 {
-      font-size: 3em;
-      margin: 0;
-    }
-
-    .container {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      padding: 20px;
-    }
-
-    .container a {
-      color: red;
-      text-decoration: none;
-      font-size: 1.2em;
-    }
-
-    .container a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
-  <h1><a href="/messages" style="color: red; text-decoration: none;">messageboard</a></h1>
-
   <div class="container">
-    {% if session.username %}
-    <div>
-      <p>You are logged in as {{ session.username }}</p>
-      <p><a href="/logout">Log out</a></p>
-    </div>
-    {% else %}
-    <div>
-      <p><a href="/login">Log in</a></p>
-    </div>
+    <h1><a href="/messages">messageboard</a></h1>
+
+    {% if request.args.get('message') %}
+      <p class="success-message">{{ request.args.get('message') }}</p>
     {% endif %}
-    <div>
-      <a href="/register">Register</a>
-    </div>
+
+    {% if session.username %}
+      <p>You are logged in as {{ session.username }}</p>
+      <div class="actions">
+        <form action="/logout" method="POST">
+          <input type="submit" value="Log out">
+        </form>
+        <a href="/register">Register</a>
+      </div>
+    {% else %}
+      <div class="actions">
+        <a href="/login">Log in</a>
+        <a href="/register">Register</a>
+      </div>
+    {% endif %}
+
   </div>
 </body>
-
 </html>

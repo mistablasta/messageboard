@@ -4,116 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages</title>
-    <style>
-        body {
-            background-color: black;
-            color: red;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .message {
-            border: 1px solid red;
-            margin-bottom: 10px;
-            padding: 10px;
-        }
-        .message p {
-            margin: 0;
-        }
-        .message .timestamp {
-            font-size: 0.9em;
-            color: grey;
-        }
-        form {
-            margin-top: 20px;
-        }
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: black;
-            color: red;
-            border: 1px solid red;
-        }
-        input[type="submit"] {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: darkred;
-        }
-        .actions {
-            margin-top: 10px;
-        }
-        .actions a, .actions form {
-            display: inline-block;
-        }
-        .actions a {
-            color: red;
-            text-decoration: none;
-            font-size: 12px;
-            padding: 5px 10px;
-            border: 1px solid red;
-            border-radius: 3px;
-        }
-        .actions a:hover {
-            background-color: darkred;
-        }
-        .actions form input[type="submit"] {
-            font-size: 12px;
-            padding: 5px 10px;
-            background-color: black;
-            color: red;
-            border: 1px solid red;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .actions form input[type="submit"]:hover {
-            background-color: darkred;
-        }
-  
-        .search-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        .search-container input[type="text"] {
-            width: 150px;
-            padding: 5px;
-            font-size: 14px;
-        }
-        .search-container input[type="submit"] {
-            padding: 5px 10px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        
-        .reaction-buttons {
-            display: flex;
-            align-items: center;
-        }
-
-        .reaction-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            margin-right: 10px;
-        }
-
-        .reaction-count {
-            font-size: 14px;
-            color: white;
-            margin-left: 10px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="search-container">
@@ -152,7 +43,7 @@
             <p>{{ message.content }}</p>
             <p class="timestamp">{{ message.timestamp }}</p>
 
-            <p><strong>Categories:</strong> {{ message.categories }}</p>
+            <p><strong>Categories:</strong> {{ message.categories | replace(',', ', ') }}</p>
 
             <div class="reactions">
                 <div class="reaction-buttons">
@@ -173,7 +64,7 @@
             {% if session.username == message.username %}
             <div class="actions">
                 <a href="/edit/{{ message.id }}">Edit</a>
-                <form action="/delete/{{ message.id }}" method="POST" style="display:inline;">
+                <form action="/delete/{{ message.id }}" method="GET" style="display:inline;">
                     <input type="submit" value="Delete">
                 </form>
             </div>
