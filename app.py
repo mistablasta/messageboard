@@ -114,7 +114,7 @@ def add_reaction_route(message_id, reaction_type):
 
     user_id = session["user_id"]
 
-    if reaction_type not in ['thumbs_up', 'thumbs_down']:
+    if reaction_type not in ["thumbs_up", "thumbs_down"]:
         return "Invalid reaction type.", 400
 
     message.add_reaction(message_id, user_id, reaction_type)
