@@ -6,6 +6,7 @@ import db
 from sql import message, profiles, user
 import secrets
 
+
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
@@ -70,6 +71,8 @@ def messages():
         check_csrf()
 
         content = request.form["content"]
+        if len(content) > 500:
+            return("Message is too long.")
         selected_categories = [int(c) for c in request.form.getlist("categories")]
         message.insert_message(session["user_id"], content, selected_categories)
         return redirect("/messages")
@@ -89,7 +92,7 @@ def messages():
 def search():
     query = request.args.get("query")
     messages_list = message.search_messages(query)
-    return render_template("messages.html", messages=messages_list)
+    return render_template("messages.html", messages=messages_list, page=1, has_more=False)
 
 @app.route("/edit/<int:message_id>", methods=["GET", "POST"])
 def edit(message_id):
